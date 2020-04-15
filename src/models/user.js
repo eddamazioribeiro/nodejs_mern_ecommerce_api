@@ -36,3 +36,29 @@ const userSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
+userSchema.virtual('password')
+    .set((password) => { 
+        this.password = password;
+        this.salt = uuidv1();
+        this.hashed_password = this.encryptPassword(password)
+    })
+    .get(() => {
+        return this.password;
+    });
+
+userSchema.methods = {
+    encryptPassword: (password) => {
+        if(!password) {
+            return '';
+        } else {
+            try {
+                return crypto.createHmac('sha1', this.salt)
+                    .update(password)
+                    .digest('hex');
+            } catch (err) {
+                return '';
+            }
+        }        
+    }
+};
