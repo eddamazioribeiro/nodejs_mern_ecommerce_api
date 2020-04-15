@@ -1,0 +1,24 @@
+{
+  "name": "mern_ecommerce",
+  "version": "1.0.0",
+  "description": "A MERN (Mongo, Express, React, NodeJS) stack e-commerce project.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./src/app.js"
+  },
+  "keywords": [
+    "nodejs",
+    "ecommerce",
+    "react"
+  ],
+  "author": "Eduardo Ribeiro",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.9.9"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.3"
+  }
+}
