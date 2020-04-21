@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const expressValidator = require('express-validator');
 require('dotenv').config();
-const userRoutes = require('./routes/user');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -30,7 +30,7 @@ app.use(cookieParser());
 app.use(expressValidator());
 
 // routes
-app.use('/api', userRoutes);
+app.use('/api', authRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
