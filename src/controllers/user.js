@@ -8,7 +8,7 @@ exports.findUserById = (req, res, next, id) => {
             });
         } else {
             req.profile = user;
-            next();
+            next();  
         }
     });
 };
