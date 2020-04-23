@@ -17,11 +17,25 @@ exports.create = (req, res) => {
             });
         } else {
             let product = new Product(fields);
+            let { name, description, price, category, quantity, shipping } = fields;
             let photo = files.photo;
 
+            // validations
             if (photo) {
+                if (files.photo.size > 1000000) {
+                    return res.status(400).json({
+                        error: 'Image should be less than 1mb in size'
+                    });
+                }
+
                 product.photo.data = fs.readFileSync(photo.path);
                 product.photo.contentType = photo.type;
+            }
+
+            if (!name || !description || !price || !category || !quantity || !shipping) {
+                return res.status(400).json({
+                    error: 'All files are required'
+                });
             }
 
             product.save((err, data) => {
