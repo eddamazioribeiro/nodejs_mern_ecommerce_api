@@ -50,3 +50,26 @@ exports.create = (req, res) => {
         }
     })
 };
+
+exports.findProductById = (req, res, next, id) => {
+    Product.findById(id)
+        .exec((err, product) => {
+            if (err || !product) {
+                res.status(400).json({
+                    error: 'Product not found'
+                })
+            } else {
+                req.product = product;
+                next();
+            }
+        });
+};
+
+exports.read = (req, res) => {
+    req.product.photo = undefined;
+    
+    return res.json({
+        message: `Product with ID ${req.product._id} found`,
+        product: req.product
+    });
+};
