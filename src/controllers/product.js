@@ -73,3 +73,35 @@ exports.read = (req, res) => {
         product: req.product
     });
 };
+
+exports.remove = (req, res) => {
+    let product = req.product;
+
+    product.remove((err, deletedProduct) => {
+        if (err) {
+            res.status(400).json({
+                error: errorHandler(err)
+            })
+        } else {
+            res.json({
+                // deletedProduct,
+                message: 'Product successfully deleted'
+            })
+        }
+    });
+};
+
+exports.removeAllProducts = (req, res) => {
+    Product.deleteMany({}, (err) => {  
+        
+        if (err) {
+            res.status(400).json({
+                error: errorHandler(err)
+            });
+        } else {
+            res.status(200).json({
+                message: 'All products were successfully deleted'
+            })
+        }
+    })
+};
