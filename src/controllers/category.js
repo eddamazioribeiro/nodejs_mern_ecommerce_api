@@ -2,17 +2,18 @@ const Category = require('../models/category');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 
 exports.findCategoryById = (req, res, next, id) => {
-    Category.findById(id, (err, category) => {
-        if (err || !category) {
-            res.status(400).json({
-                error: `Category with ID ${id} not found`
-            })
-        } else {
-            req.category = category;
-        }
+    Category.findById(id)
+        .exec((err, category) => {
+            if (err || !category) {
+                res.status(400).json({
+                    error: `Category with ID ${id} not found`
+                })
+            } else {
+                req.category = category;
+            }
 
-        next();
-    });
+            next();
+        });
 };
 
 exports.create = (req, res) => {
@@ -23,16 +24,18 @@ exports.create = (req, res) => {
                 error: errorHandler(err)
             })
         } else {
-            res.json({data});
+            res.json({ data });
         }
     })
 };
 
 exports.read = (req, res) => {
     let category = req.category
-    
-    return res.json({
-        category
-    });
+
+    if (!category) {
+        return res.json({
+            category
+        });
+    }
 };
 

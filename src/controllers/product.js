@@ -56,22 +56,26 @@ exports.findProductById = (req, res, next, id) => {
         .exec((err, product) => {
             if (err || !product) {
                 res.status(400).json({
-                    error: 'Product not found'
+                    error: `Product with ID ${id} not found`
                 })
             } else {
                 req.product = product;
-                next();
             }
+
+            next();
         });
 };
 
 exports.read = (req, res) => {
-    req.product.photo = undefined;
+    let product = req.product;
     
-    return res.json({
-        message: `Product with ID ${req.product._id} found`,
-        product: req.product
-    });
+    if (product) {
+        product.photo = undefined;
+
+        return res.json({
+            product
+        });
+    }
 };
 
 exports.remove = (req, res) => {
