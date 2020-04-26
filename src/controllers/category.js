@@ -1,5 +1,5 @@
 const Category = require('../models/category');
-const { errorHandler } = require('../helpers/dbErrorHandler');
+const {errorHandler} = require('../helpers/dbErrorHandler');
 
 exports.findCategoryById = (req, res, next, id) => {
     Category.findById(id)
@@ -24,7 +24,7 @@ exports.create = (req, res) => {
                 error: errorHandler(err)
             })
         } else {
-            res.json({ data });
+            res.json(data);
         }
     })
 };
@@ -32,10 +32,51 @@ exports.create = (req, res) => {
 exports.read = (req, res) => {
     let category = req.category
 
-    if (!category) {
+    if (category) {
         return res.json({
             category
         });
     }
 };
 
+exports.list = (req, res) => {
+    Category.find().exec((err, data) => {
+        if (err) {
+            res.status(400).json(data)
+        } else {
+            res.json(data)
+        }
+    });
+};
+
+exports.update = (req, res) => {
+    var category = req.category;
+
+    category.name = req.body.name;
+    
+    category.save((err, data) => {
+        if (err) {
+            res.status(400).json({
+                error: errorHandler(err)
+            });
+        } else {
+            res.json(data);
+        }
+    })
+};
+
+exports.remove = (req, res) => {
+    var category = req.category;
+
+    category.remove((err, deleteCategory) => {
+        if (err) {
+            res.status(400).json({
+                error: errorHandler(err)
+            });
+        } else {
+            res.json({
+                message: 'Category successfully deleted'
+            });
+        }
+    })
+};
