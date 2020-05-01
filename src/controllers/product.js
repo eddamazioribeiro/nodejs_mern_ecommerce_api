@@ -200,3 +200,15 @@ exports.listRelated = (req, res) => {
             }
         });
 };
+
+exports.listCategories = (req, res) => {
+    Product.distinct('category', {}, (err, categories) => {
+        if (err) {
+            return res.status(400).json({
+                error: 'Categories not found'
+            });
+        } else {
+            res.json(categories);
+        }
+    });
+};
