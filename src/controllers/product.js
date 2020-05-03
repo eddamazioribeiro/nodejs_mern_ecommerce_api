@@ -212,3 +212,46 @@ exports.listCategories = (req, res) => {
         }
     });
 };
+
+exports.listBySearch = (req, res) => {
+    var order = req.body.order ? req.body.order : 'desc';
+    var sortBy = req.body.sortBy ? req.body.sortBy : '_id';
+    var limit = req.body.limit ? parseInt(req.body.limit) : 100;
+    var skip = parseInt(req.body.skip);
+    var findArgs = {};
+
+    for (let key in req.body.filters) {
+        if (req.body.filters[key].lenght > 0) {
+            if (key === 'price') {
+                findArgs[key] = {
+                    // gte - greater than price [0-10]
+                    // lte - less than
+                    // MongoDB notation
+                    $gte: req.body.filters[key][0],
+                    $lte: req.body.filters[key][1]
+                };
+            } else {
+                findArgs[key] = req.body.filters[key];
+            }
+        }
+    }
+
+    Product.find(findArgs)
+        .select('-photo')
+        .populate('category')
+        .sort([[sortBy, order]])
+        .skip(skip)
+        .limit(limit)
+        .exec((err, data) => {
+            if (err) {
+                return res.status(400).json({
+                    error: 'Products not found'
+                });
+            } else {
+                res.json({
+                    size: data.length,
+                    products: data
+                });
+            }
+        })
+};
