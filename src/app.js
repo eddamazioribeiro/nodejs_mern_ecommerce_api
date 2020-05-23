@@ -29,7 +29,7 @@ mongoose.connect(CONNECTION, {
     });
 
 // middleware
-app.use(morgan('D'));
+app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
