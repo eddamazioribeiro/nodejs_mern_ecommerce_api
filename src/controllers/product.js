@@ -274,18 +274,22 @@ exports.listSearch = (req, res) => {
     // and category value, from params
     const query = {};
 
+    // assign search value to query.name filter
     if (req.query.search) {
         query.name = {
             $regex: req.query.search,
             $options: 'i'
         }
+    }
 
-        // assign category value to query.category
-        if (req.query.category && req.query.category != 'All') {
-            query.category = req.query.category
-        }
+    // assign category value to query.category
+    if (req.query.category && req.query.category != 'All') {
+        query.category = req.query.category
+    }
 
-        // find by category and search name
+    if(query.name || query.category) {
+        console.log('here 2', query);
+
         Product.find(query, (err, products) => {
             if (err) {
                 return res.status(400).json({
@@ -294,6 +298,6 @@ exports.listSearch = (req, res) => {
             } else {
                 res.json(products);
             }
-        }).select('-photo');
+        }).select('-photo');    
     }
 };
