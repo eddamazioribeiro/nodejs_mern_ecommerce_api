@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {generateToken} =  require('../controllers/braintree');
+const {generateToken, processPayment} =  require('../controllers/braintree');
 const {findUserById} =  require('../controllers/user');
 const {requireSignIn, isAuth} =  require('../controllers/auth');
 
